@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public class ColorSelectorAttribute : PropertyAttribute {}
+
 [ExecuteAlways]
 public class UIColorBinder : MonoBehaviour
 {
     public ColorPalette palette;
     public Component target;
-    public ColorKey color;
+    [ColorSelector] public int color;
 
     void OnValidate()
     {
@@ -37,9 +39,7 @@ public class UIColorBinder : MonoBehaviour
     void UpdateColor()
     {
         if (!palette || !target) return;
-
-        var c = palette.KeyToColor(color);
-
+        var c = palette.colors[color];
         if      (target is Graphic g)  g.color = c;
         else if (target is TMP_Text t) t.color = c;
         else   Debug.LogWarning($"{target.name} has no color property.", this);

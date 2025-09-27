@@ -1,10 +1,9 @@
-// Editor/ColorKeyDrawer.cs
+// Editor/ColorIndexDrawer.cs
 using UnityEditor;
 using UnityEngine;
-using System;
 
-[CustomPropertyDrawer(typeof(ColorKey))]
-public class ColorKeyDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(ColorSelectorAttribute))]      // draw for int fields
+public class ColorSelectorDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -21,11 +20,9 @@ public class ColorKeyDrawer : PropertyDrawer
             return;
         }
 
-        // get colors & names from enum
         var colors = palette.colors;
-        string[] names = Enum.GetNames(typeof(ColorKey));
 
-        // draw label
+        // label
         var labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
         EditorGUI.LabelField(labelRect, label);
 
@@ -51,13 +48,13 @@ public class ColorKeyDrawer : PropertyDrawer
             // click to select
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
-                property.enumValueIndex = i;
+                property.intValue = i;                              // <<— int instead of enum
                 property.serializedObject.ApplyModifiedProperties();
                 GUI.changed = true;
             }
 
-            // mark currently selected
-            if (property.enumValueIndex == i)
+            // highlight selected
+            if (property.intValue == i)
             {
                 var checkRect = new Rect(rect.x + 2, rect.y + 2, square - 4, square - 4);
                 EditorGUI.DrawRect(checkRect, new Color(1, 1, 1, 0.25f));

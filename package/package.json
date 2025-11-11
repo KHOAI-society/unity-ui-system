@@ -1,0 +1,9 @@
+{
+    "displayName": "K Unity UI System",
+    "name": "com.khoai.kuisystem",
+    "version": "0.0.2",
+    "unity": "2022.3",
+    "unityRelease": "46f1",
+    "dependencies": {
+   }
+}

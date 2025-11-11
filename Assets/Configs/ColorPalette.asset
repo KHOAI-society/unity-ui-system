@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ColorPalette
   m_EditorClassIdentifier: Assembly-CSharp::ColorPalette
   colors:
-  - {r: 1, g: 0.3726415, b: 0.3726415, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0.18523192, g: 1, b: 0, a: 1}
   - {r: 0.054957304, g: 0.6203727, b: 0.8962264, a: 1}
   - {r: 1, g: 0.9785557, b: 0.023584902, a: 1}

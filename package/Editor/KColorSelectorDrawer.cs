@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Khoai.Editor
 {
-    [CustomPropertyDrawer(typeof(ColorSelectorAttribute))]      // draw for int fields
-    public class ColorSelectorDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(KColorSelectorAttribute))]      // draw for int fields
+    public class KColorSelectorDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

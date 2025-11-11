@@ -5,14 +5,14 @@ using TMPro;
 
 namespace Khoai
 {
-    public class ColorSelectorAttribute : PropertyAttribute { }
+    public class KColorSelectorAttribute : PropertyAttribute { }
 
     [ExecuteAlways]
     public class KUIColorBinder : KMonoBehaviour
     {
         public KColorPalette palette;
         public Component target;
-        [ColorSelector] public int color;
+        [KColorSelector] public int color;
 
         void OnValidate()
         {

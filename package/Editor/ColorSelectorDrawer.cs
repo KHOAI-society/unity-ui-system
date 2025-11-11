@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 
-
 namespace Khoai.Editor
 {
     [CustomPropertyDrawer(typeof(ColorSelectorAttribute))]      // draw for int fields
@@ -41,11 +40,11 @@ namespace Khoai.Editor
                 Handles.color = Color.black;
                 Handles.DrawAAPolyLine(2, new Vector3[]
                 {
-                new(rect.xMin, rect.yMin),
-                new(rect.xMax, rect.yMin),
-                new(rect.xMax, rect.yMax),
-                new(rect.xMin, rect.yMax),
-                new(rect.xMin, rect.yMin)
+                    new(rect.xMin, rect.yMin),
+                    new(rect.xMax, rect.yMin),
+                    new(rect.xMax, rect.yMax),
+                    new(rect.xMin, rect.yMax),
+                    new(rect.xMin, rect.yMin)
                 });
 
                 // click to select

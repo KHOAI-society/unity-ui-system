@@ -8,7 +8,7 @@ namespace Khoai
     public class ColorSelectorAttribute : PropertyAttribute { }
 
     [ExecuteAlways]
-    public class KUIColorBinder : MonoBehaviour
+    public class KUIColorBinder : KMonoBehaviour
     {
         public KColorPalette palette;
         public Component target;

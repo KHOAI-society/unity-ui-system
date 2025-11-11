@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace Khoai
 {
+    [ExecuteAlways]
     public class KImage : Image, KIColoredUI
     {
         public KColorPalette palette;

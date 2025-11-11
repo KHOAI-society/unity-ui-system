@@ -12,5 +12,18 @@ namespace Khoai
             base.Start();
             colorPalette = Resources.Load<KColorPalette>("ColorPallete");
         }
+
+        private void NotifyKUIs()
+        {
+            GetGameObjectsByType<KIColoredUI>()
+                .ForEach(k => (k as KIColoredUI).ColorsUpdated(colorPalette));
+        }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            NotifyKUIs();
+        }
+#endif
     }
 }

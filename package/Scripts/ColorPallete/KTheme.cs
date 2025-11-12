@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Khoai
@@ -7,26 +8,21 @@ namespace Khoai
     [ExecuteAlways]
     public partial class KTheme : ScriptableObject
     {
-        public string version;
         public KColorPalette colorPalette;
-        List<Component> coloredUIs;
 
-        void OnEnable()
+        public void UpdateColoredObject()
         {
-            coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredUI>();
-            coloredUIs?.ForEach(k => (k as KIColoredUI).ColorsUpdated(colorPalette));
-        }
-
-        void OnDestroy()
-        {
-            coloredUIs = null;
+            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredUI>();
+            Debug.Log($"ui count: {coloredUIs.Count()}");
+            foreach(var item in coloredUIs)
+                (item as KIColoredUI).ColorsUpdated(colorPalette);
         }
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        void OnValidate()
         {
-            coloredUIs?.ForEach(k => (k as KIColoredUI).ColorsUpdated(colorPalette));
+            UpdateColoredObject();
         }
-    #endif
+#endif
     }
 }

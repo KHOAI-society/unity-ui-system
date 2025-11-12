@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Khoai.Editor
+namespace Khoai.Editors
 {
     [CustomPropertyDrawer(typeof(KColorSelectorAttribute))]      // draw for int fields
     public class KColorSelectorDrawer : PropertyDrawer

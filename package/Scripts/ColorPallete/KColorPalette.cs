@@ -15,8 +15,6 @@ namespace Khoai
         private void OnValidate()
         {
             Changed?.Invoke();
-            KMonoBehaviour.GetGameObjectsByType<KIColoredUI>()
-            .ForEach(k => (k as KIColoredUI).ColorsUpdated(this));
         }
     #endif
     }

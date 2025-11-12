@@ -4,36 +4,26 @@ using UnityEngine.UI;
 
 namespace Khoai
 {
+    [RequireComponent(typeof(Image))]
     [ExecuteAlways]
-    public class KImage : Image, KIColoredUI
+    public class KImage : KThemedItem, KIColoredUI
     {
-        public KColorPalette palette;
-        [KColorSelector] public int selectedColor;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            KMonoBehaviour.AddObjectToCache(gameObject);
-            palette = KTheme.Instance.colorPalette;
-            UpdateColor();
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            KMonoBehaviour.RemoveObjectFromCache(gameObject);
-        }
-
         void UpdateColor()
         {
             if (!palette) return;
-            color = palette.colors[selectedColor];
+            GetComponent<Image>().color = palette.colors[selectedColor];
         }
 
-        public void ColorsUpdated(KColorPalette colorPalette)
+        public override void ColorsUpdated(KColorPalette colorPalette)
         {
-            palette = colorPalette;
             UpdateColor();
         }
+
+#if UNITY_EDITOR
+        void OnValidate()
+        {
+            UpdateColor();
+        }
+#endif
     }
 }

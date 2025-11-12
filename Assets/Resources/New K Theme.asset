@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0542afc7a2b495dbcb5b0a26d274d2, type: 3}
   m_Name: New K Theme
   m_EditorClassIdentifier: SensorInterop::Khoai.KTheme
-  version: 
   colorPalette: {fileID: 11400000, guid: cc56095e5cdff804886b0d454d53cdd8, type: 2}

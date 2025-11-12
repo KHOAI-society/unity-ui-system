@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace Khoai
 {
+    public class KColorList : PropertyAttribute { }
+
     [CreateAssetMenu(menuName = "UI/KColorPalette")]
     public class KColorPalette : ScriptableObject
     {

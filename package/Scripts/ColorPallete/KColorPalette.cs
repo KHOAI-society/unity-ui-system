@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Khoai
 {
@@ -14,7 +15,10 @@ namespace Khoai
     #if UNITY_EDITOR
         private void OnValidate()
         {
-            Changed?.Invoke();
+            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredUI>();
+            Debug.Log($"ui count: {coloredUIs.Count()}");
+            foreach(var item in coloredUIs)
+                (item as KIColoredUI).SyncColor(this);
         }
     #endif
     }

@@ -15,7 +15,7 @@ namespace Khoai
             var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredUI>();
             Debug.Log($"ui count: {coloredUIs.Count()}");
             foreach(var item in coloredUIs)
-                (item as KIColoredUI).ColorsUpdated(colorPalette);
+                (item as KIColoredUI).SyncColor(colorPalette);
         }
 
 #if UNITY_EDITOR

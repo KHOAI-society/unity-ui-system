@@ -1,9 +1,5 @@
-
-using UnityEngine;
-
 namespace Khoai
 {
-    [ExecuteAlways]
     public class KThemedItem : KMonoBehaviour
     {
         public KColorPalette palette;
@@ -12,10 +8,15 @@ namespace Khoai
         protected override void Start()
         {
             base.Start();
-            ColorsUpdated(KTheme.Instance.colorPalette);
+            SyncColor(KTheme.Instance.colorPalette);
         }
 
-        public virtual void ColorsUpdated(KColorPalette colorPalette)
+        public virtual void SyncColor()
+        {
+            SyncColor(palette);
+        }
+
+        public virtual void SyncColor(KColorPalette colorPalette)
         {
             palette = colorPalette;
         }

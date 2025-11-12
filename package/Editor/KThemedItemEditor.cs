@@ -12,7 +12,7 @@ namespace Khoai.Editors
             {
                 var kimage = obj as KImage;
                 if (kimage == null) continue;
-                kimage.ColorsUpdated(KTheme.Instance.colorPalette);
+                kimage.SyncColor(KTheme.Instance.colorPalette);
             }
         }
     }

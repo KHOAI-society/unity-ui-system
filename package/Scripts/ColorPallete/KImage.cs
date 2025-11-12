@@ -5,24 +5,20 @@ using UnityEngine.UI;
 namespace Khoai
 {
     [RequireComponent(typeof(Image))]
-    [ExecuteAlways]
     public class KImage : KThemedItem, KIColoredUI
     {
-        void UpdateColor()
+        public override void SyncColor(KColorPalette colorPalette)
         {
+            palette = colorPalette;
+
             if (!palette) return;
             GetComponent<Image>().color = palette.colors[selectedColor];
         }
 
-        public override void ColorsUpdated(KColorPalette colorPalette)
-        {
-            UpdateColor();
-        }
-
 #if UNITY_EDITOR
-        void OnValidate()
+        protected void OnValidate()
         {
-            UpdateColor();
+            SyncColor();
         }
 #endif
     }

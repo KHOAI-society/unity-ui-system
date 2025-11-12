@@ -3,6 +3,7 @@ namespace Khoai
 {
     public interface KIColoredUI
     {
-        public void ColorsUpdated(KColorPalette colorPalette);
+        public void SyncColor();
+        public void SyncColor(KColorPalette colorPalette);
     }
 }

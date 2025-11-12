@@ -12,6 +12,7 @@ namespace Khoai
             palette = colorPalette;
 
             if (!palette) return;
+            if (palette.colors.Count == 0) return;
             GetComponent<Image>().color = palette.colors[selectedColor];
         }
 

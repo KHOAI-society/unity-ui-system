@@ -3,7 +3,7 @@ namespace Khoai
     public class KThemedItem : KMonoBehaviour
     {
         public KColorPalette palette;
-        [KColorSelector] public int selectedColor;
+        public int selectedColor = 0;
 
         protected override void Start()
         {

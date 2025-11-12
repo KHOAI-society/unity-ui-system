@@ -14,6 +14,7 @@ namespace Khoai
         public Component target;
         [KColorSelector] public int color;
 
+#if UNITY_EDITOR
         void OnValidate()
         {
             if (!target)
@@ -23,6 +24,7 @@ namespace Khoai
             }
             UpdateColor();
         }
+#endif
 
         void OnEnable()
         {

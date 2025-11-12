@@ -1,8 +1,5 @@
 
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 namespace Khoai
@@ -17,7 +14,7 @@ namespace Khoai
         {
             base.Awake();
             KMonoBehaviour.AddObjectToCache(gameObject);
-            palette = KThemeManager.Instance.colorPalette;
+            palette = KTheme.Instance.colorPalette;
             UpdateColor();
         }
 

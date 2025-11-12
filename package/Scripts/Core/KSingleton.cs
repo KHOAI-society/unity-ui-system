@@ -3,10 +3,6 @@ using UnityEngine;
 
 namespace Khoai
 {
-	/// <summary>
-	/// Inherit from this base class to create a singleton.
-	/// e.g. public class MyClassName : Singleton<MyClassName> {}
-	/// </summary>
 	public class KSingleton<T> : KMonoBehaviour where T : KMonoBehaviour
 	{
 		// Check to see if we're about to be destroyed.
@@ -59,9 +55,9 @@ namespace Khoai
 			m_ShuttingDown = true;
 		}
 
-        protected override void OnDestroy()
-        {
+		protected override void OnDestroy()
+		{
 			m_ShuttingDown = true;
-        }
-    }
+		}
+	}
 }

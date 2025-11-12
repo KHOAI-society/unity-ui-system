@@ -5,15 +5,11 @@ using System.Linq;
 
 namespace Khoai
 {
-    public class KColorListAttribute : PropertyAttribute { }
+    public class KColorSelectionAttribute : PropertyAttribute { }
 
     [CreateAssetMenu(menuName = "UI/KColorPalette")]
     public class KColorPalette : ScriptableObject
     {
-        public event Action Changed;
-
-        public List<Color> colors = new();
-
         public Dictionary<string, Color> colorsList;
 
     #if UNITY_EDITOR

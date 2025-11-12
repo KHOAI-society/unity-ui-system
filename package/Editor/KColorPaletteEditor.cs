@@ -10,7 +10,6 @@ namespace Khoai.Editors
     {
         private const float RemoveButtonWidth = 24f;
 
-        private SerializedProperty colorsProperty;
         private FieldInfo dictionaryField;
         private readonly List<string> keyBuffer = new();
         private bool showNamedColors = true;
@@ -21,19 +20,12 @@ namespace Khoai.Editors
 
         private void OnEnable()
         {
-            colorsProperty = serializedObject.FindProperty("colors");
             dictionaryField = typeof(KColorPalette).GetField("colorsList", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-
-            if (colorsProperty != null)
-            {
-                EditorGUILayout.PropertyField(colorsProperty, true);
-                EditorGUILayout.Space();
-            }
 
             DrawNamedColorsSection();
 

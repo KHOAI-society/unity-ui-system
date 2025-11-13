@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -167,8 +168,8 @@ namespace Khoai.Editors
                 dictNamesBuffer.Add(key);
                 dictColorsBuffer.Add(dictBuffer[key]);
             }
-            dictNamesField.SetValue(kColorPalette, dictNamesBuffer);
-            dictColorsField.SetValue(kColorPalette, dictColorsBuffer);
+            dictNamesField.SetValue(kColorPalette, dictNamesBuffer.ToList());
+            dictColorsField.SetValue(kColorPalette, dictColorsBuffer.ToList());
             EditorUtility.SetDirty(kColorPalette);
             Repaint();
         }

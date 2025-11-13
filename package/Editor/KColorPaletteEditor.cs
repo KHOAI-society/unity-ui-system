@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Codice.CM.Common;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,23 +12,21 @@ namespace Khoai.Editors
     public class KColorPaletteEditor : Editor
     {
         private const float RemoveButtonWidth = 24f;
-        private KColorPalette kColorPalette;
-        private FieldInfo dictNamesField;
-        private FieldInfo dictColorsField;
         private readonly List<string> keyBuffer = new();
         private readonly Dictionary<string, Color> dictBuffer = new();
-        private List<string> dictNamesBuffer = new();
-        private List<Color> dictColorsBuffer = new();
         private bool showNamedColors = true;
 
         private static readonly GUIContent NamedColorsLabel = new("Named Colors");
         private static readonly GUIContent AddButtonContent = new("Add Color", "Append a new named color entry");
         private static readonly GUIContent RemoveButtonContent = new("-", "Remove this color");
 
+        private SerializedProperty colorNamesListSerializedProperty;
+        private SerializedProperty colorListSerializedProperty;
+
         private void OnEnable()
         {
-            dictNamesField = typeof(KColorPalette).GetField("dictsName", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            dictColorsField = typeof(KColorPalette).GetField("dictsColors", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            colorNamesListSerializedProperty = serializedObject.FindProperty("colorNamesList");
+            colorListSerializedProperty = serializedObject.FindProperty("colorList");
         }
 
         public override void OnInspectorGUI()
@@ -37,18 +36,15 @@ namespace Khoai.Editors
             DrawNamedColorsSection();
 
             serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(target);
+            Repaint();
         }
 
         private void DrawNamedColorsSection()
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                var errorMessage = SyncListsToDict();
-                if(errorMessage != null)
-                {
-                    EditorGUILayout.HelpBox(errorMessage, MessageType.Error);
-                    return;
-                }
+                SyncListsToDict();
 
                 showNamedColors = EditorGUILayout.Foldout(showNamedColors, NamedColorsLabel, true);
                 if (!showNamedColors)
@@ -110,7 +106,6 @@ namespace Khoai.Editors
                 Color newColor = EditorGUILayout.ColorField(dictBuffer[key]);
                 if (EditorGUI.EndChangeCheck())
                 {
-
                     dictBuffer[key] = newColor;
                     SyncToLists();
                 }
@@ -123,55 +118,57 @@ namespace Khoai.Editors
             }
         }
 
-        private string SyncListsToDict()
+        private void SyncListsToDict()
         {
-            kColorPalette = target as KColorPalette;
-            dictColorsBuffer.Clear();
-            dictNamesBuffer.Clear();
+            List<string> names = Enumerable.Range(0, colorNamesListSerializedProperty.arraySize)
+                .Select(i => colorNamesListSerializedProperty.GetArrayElementAtIndex(i).stringValue)
+                .ToList();
 
-            if (!kColorPalette) return "Color palette does not exist";
-            if (dictNamesField == null) return "Name list does not exist";
-            if (dictColorsField == null) return "Color list does not exist";
-            
-            if (dictColorsField.GetValue(target) is List<Color> tempColorBuffer)
-                dictColorsBuffer.AddRange(tempColorBuffer);
-            if (dictNamesField.GetValue(kColorPalette) is List<string> tempNamesBuffer)
-                dictNamesBuffer.AddRange(tempNamesBuffer);
+            List<Color> colors = Enumerable.Range(0, colorListSerializedProperty.arraySize)
+                .Select(i => colorListSerializedProperty.GetArrayElementAtIndex(i).colorValue)
+                .ToList();
 
-            if (dictColorsBuffer.Count != dictNamesBuffer.Count)
+            if (names.Count != colors.Count)
             {
                 Debug.LogError("Mismatched colors list and names list. Filled to match");
             }
-            var maxLength = Math.Max(dictColorsBuffer.Count, dictNamesBuffer.Count);
+            var maxLength = Math.Max(names.Count, colors.Count);
 
             dictBuffer.Clear();
             keyBuffer.Clear();
             for(int i=0;i<maxLength;i++)
             {
-                if(i == dictColorsBuffer.Count) dictColorsBuffer.Add(Color.white);
-                if(i== dictNamesBuffer.Count) dictNamesBuffer.Add(GenerateUniqueKey(dictBuffer));
+                if(i == colors.Count) colors.Add(Color.white);
+                if(i== names.Count) names.Add(GenerateUniqueKey(dictBuffer));
 
-                dictBuffer.Add(dictNamesBuffer[i], dictColorsBuffer[i]);
+                dictBuffer.Add(names[i], colors[i]);
+                keyBuffer.Add(names[i]);
             }
-            keyBuffer.AddRange(dictNamesBuffer);
-            return null;
         }
 
         private void SyncToLists()
         {
-            kColorPalette = target as KColorPalette;
-            dictColorsBuffer.Clear();
-            dictNamesBuffer.Clear();
-            
-            foreach(var key in dictBuffer.Keys)
+            while (colorNamesListSerializedProperty.arraySize > 0)
             {
-                dictNamesBuffer.Add(key);
-                dictColorsBuffer.Add(dictBuffer[key]);
+                colorNamesListSerializedProperty.DeleteArrayElementAtIndex(colorNamesListSerializedProperty.arraySize - 1);
             }
-            dictNamesField.SetValue(kColorPalette, dictNamesBuffer.ToList());
-            dictColorsField.SetValue(kColorPalette, dictColorsBuffer.ToList());
-            EditorUtility.SetDirty(kColorPalette);
-            Repaint();
+            while (colorListSerializedProperty.arraySize > 0)
+            {
+                colorListSerializedProperty.DeleteArrayElementAtIndex(colorListSerializedProperty.arraySize - 1);
+            }
+
+            var keys = dictBuffer.Keys.ToArray();
+            for(int i =0;i<keys.Length;i++)
+            {
+                var key = keys[i];
+                colorNamesListSerializedProperty.InsertArrayElementAtIndex(i);
+                var nameElement = colorNamesListSerializedProperty.GetArrayElementAtIndex(i);
+                nameElement.stringValue = key;
+
+                colorListSerializedProperty.InsertArrayElementAtIndex(i);
+                var colorElement = colorListSerializedProperty.GetArrayElementAtIndex(i);
+                colorElement.colorValue = dictBuffer[key];
+            }
         }
 
         private static string GenerateUniqueKey(Dictionary<string, Color> dictionary)

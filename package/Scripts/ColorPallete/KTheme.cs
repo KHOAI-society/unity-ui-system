@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Khoai
 {
     [CreateAssetMenu(menuName = "UI/KTheme")]
-    [ExecuteAlways]
     public partial class KTheme : ScriptableObject
     {
         public KColorPalette colorPalette;

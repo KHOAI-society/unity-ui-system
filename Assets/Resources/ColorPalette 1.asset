@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1227b1bd42333b549a5fca1e5dd4c4e0, type: 3}
   m_Name: ColorPalette 1
   m_EditorClassIdentifier: Assembly-CSharp::ColorPalette
+  colorNamesList:
+  - Color 1
+  - Color 2
+  colorList:
+  - {r: 0.4339623, g: 0.31728375, b: 0.31728375, a: 1}
+  - {r: 1, g: 0.91909254, b: 0, a: 1}

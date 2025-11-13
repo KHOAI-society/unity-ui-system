@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,18 +15,15 @@ namespace Khoai
         public override void SyncColor(KColorPalette colorPalette)
         {
             base.SyncColor(colorPalette);
-            if (!palette) return;
-            if (palette.colorsList == null) 
+            try
             {
-                GetComponent<Image>().color = errorColor;
-                return;
+                GetComponent<Image>().color = palette.colorsList[mainColor];
             }
-            if (!palette.colorsList.ContainsKey(mainColor))
+            catch(Exception ex)
             {
+                Debug.LogException(ex);
                 GetComponent<Image>().color = errorColor;
-                return;
             }
-            GetComponent<Image>().color = palette.colorsList[mainColor];
         }
 
 #if UNITY_EDITOR

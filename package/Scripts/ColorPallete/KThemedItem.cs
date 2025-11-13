@@ -1,7 +1,10 @@
+using System.Drawing;
+
 namespace Khoai
 {
     public class KThemedItem : KMonoBehaviour
     {
+        public static readonly UnityEngine.Color errorColor = new(1f, 0f, 1f);
         public KColorPalette palette;
 
         protected override void Start()

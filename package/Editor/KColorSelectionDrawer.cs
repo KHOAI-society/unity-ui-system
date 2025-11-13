@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -62,10 +63,8 @@ namespace Khoai.Editors
             keyCache.Clear();
             foreach (var key in dictionary.Keys)
             {
-                if (!string.IsNullOrEmpty(key))
-                {
-                    keyCache.Add(key);
-                }
+                if (string.IsNullOrEmpty(key)) continue;
+                keyCache.Add(key);
             }
 
             if (keyCache.Count == 0)
@@ -73,18 +72,6 @@ namespace Khoai.Editors
                 EditorGUI.HelpBox(position, "Palette has no valid color keys.", MessageType.Info);
                 EditorGUI.EndProperty();
                 return;
-            }
-
-            if (string.IsNullOrEmpty(property.stringValue) || !dictionary.ContainsKey(property.stringValue))
-            {
-                property.stringValue = keyCache[0];
-            }
-
-            int currentIndex = keyCache.IndexOf(property.stringValue);
-            if (currentIndex < 0)
-            {
-                currentIndex = 0;
-                property.stringValue = keyCache[0];
             }
 
             Rect controlRect = EditorGUI.PrefixLabel(position, label);
@@ -100,29 +87,30 @@ namespace Khoai.Editors
                 colorRect.width = 0f;
             }
 
-            var options = keyCache.ToArray();
-
-            bool previousMixedValue = EditorGUI.showMixedValue;
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
-            EditorGUI.BeginChangeCheck();
-            int selectedIndex = EditorGUI.Popup(popupRect, currentIndex, options);
-            if (EditorGUI.EndChangeCheck() && selectedIndex >= 0 && selectedIndex < keyCache.Count)
-            {
-                property.stringValue = keyCache[selectedIndex];
-            }
-            EditorGUI.showMixedValue = previousMixedValue;
 
-            if (colorRect.width > 0f && dictionary.TryGetValue(property.stringValue, out var color))
+            if (colorRect.width <= 0f) return;
+
+            var options = keyCache.ToArray();
+            int currentIndex = Array.IndexOf(options, property.stringValue);  
+            EditorGUI.BeginChangeCheck(); 
+            int newIndex = EditorGUI.Popup(popupRect, currentIndex, options);
+            if(EditorGUI.EndChangeCheck())
             {
-                EditorGUI.DrawRect(colorRect, color);
-                Handles.color = Color.black;
-                Handles.DrawAAPolyLine(2f,
-                    new Vector3(colorRect.xMin, colorRect.yMin),
-                    new Vector3(colorRect.xMax, colorRect.yMin),
-                    new Vector3(colorRect.xMax, colorRect.yMax),
-                    new Vector3(colorRect.xMin, colorRect.yMax),
-                    new Vector3(colorRect.xMin, colorRect.yMin));
+                currentIndex = newIndex;
+                property.stringValue = keyCache[currentIndex];
             }
+
+            var color = dictionary.GetValueOrDefault(property.stringValue, KThemedItem.errorColor);
+
+            EditorGUI.DrawRect(colorRect, color);
+            Handles.color = Color.black;
+            Handles.DrawAAPolyLine(2f,
+                new Vector3(colorRect.xMin, colorRect.yMin),
+                new Vector3(colorRect.xMax, colorRect.yMin),
+                new Vector3(colorRect.xMax, colorRect.yMax),
+                new Vector3(colorRect.xMin, colorRect.yMax),
+                new Vector3(colorRect.xMin, colorRect.yMin));
 
             EditorGUI.EndProperty();
         }

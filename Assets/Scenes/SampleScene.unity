@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SensorInterop::Khoai.KImage
   palette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
-  mainColor: Color 1
+  mainColor: Color 2
 --- !u!114 &317037786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SensorInterop::Khoai.KImage
   palette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
-  mainColor: Color 1
+  mainColor: Color 2
 --- !u!114 &801425584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,7 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SensorInterop::Khoai.KImage
   palette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
-  mainColor: Color 1
+  mainColor: Color 2
 --- !u!114 &1644882484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

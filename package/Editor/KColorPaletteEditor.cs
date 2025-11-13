@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -9,9 +10,13 @@ namespace Khoai.Editors
     public class KColorPaletteEditor : Editor
     {
         private const float RemoveButtonWidth = 24f;
-
-        private FieldInfo dictionaryField;
+        private KColorPalette kColorPalette;
+        private FieldInfo dictNamesField;
+        private FieldInfo dictColorsField;
         private readonly List<string> keyBuffer = new();
+        private readonly Dictionary<string, Color> dictBuffer = new();
+        private List<string> dictNamesBuffer = new();
+        private List<Color> dictColorsBuffer = new();
         private bool showNamedColors = true;
 
         private static readonly GUIContent NamedColorsLabel = new("Named Colors");
@@ -20,7 +25,8 @@ namespace Khoai.Editors
 
         private void OnEnable()
         {
-            dictionaryField = typeof(KColorPalette).GetField("colorsList", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            dictNamesField = typeof(KColorPalette).GetField("dictsName", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            dictColorsField = typeof(KColorPalette).GetField("dictsColors", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         }
 
         public override void OnInspectorGUI()
@@ -36,9 +42,10 @@ namespace Khoai.Editors
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                if (dictionaryField == null)
+                var errorMessage = SyncListsToDict();
+                if(errorMessage != null)
                 {
-                    EditorGUILayout.HelpBox("colorsList field not found or has an incompatible type.", MessageType.Error);
+                    EditorGUILayout.HelpBox(errorMessage, MessageType.Error);
                     return;
                 }
 
@@ -50,40 +57,25 @@ namespace Khoai.Editors
 
                 EditorGUI.indentLevel++;
 
-                var palette = target as KColorPalette;
-                var dictionary = EnsureDictionary(palette);
-
-                if (dictionary == null)
-                {
-                    EditorGUILayout.HelpBox("Failed to access colorsList dictionary.", MessageType.Error);
-                    EditorGUI.indentLevel--;
-                    return;
-                }
-
-                keyBuffer.Clear();
-                keyBuffer.AddRange(dictionary.Keys);
 
                 foreach (var key in keyBuffer)
                 {
-                    DrawDictionaryRow(key, dictionary);
+                    DrawDictionaryRow(key);
                 }
 
                 EditorGUILayout.Space(4f);
 
                 if (GUILayout.Button(AddButtonContent))
                 {
-                    ApplyToTargets("Add Color", dict =>
-                    {
-                        var uniqueKey = GenerateUniqueKey(dict);
-                        dict[uniqueKey] = Color.white;
-                    });
+                    dictBuffer.Add(GenerateUniqueKey(dictBuffer), Color.white);
+                    SyncToLists();
                 }
 
                 EditorGUI.indentLevel--;
             }
         }
 
-        private void DrawDictionaryRow(string key, Dictionary<string, Color> dictionary)
+        private void DrawDictionaryRow(string key)
         {
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -98,75 +90,87 @@ namespace Khoai.Editors
                     }
                     else if (newKey != key)
                     {
-                        if (dictionary.ContainsKey(newKey))
+                        if (dictBuffer.ContainsKey(newKey))
                         {
                             EditorUtility.DisplayDialog("Duplicate Name", $"Color \"{newKey}\" already exists.", "OK");
                         }
                         else
                         {
-                            ApplyToTargets("Rename Color", dict =>
-                            {
-                                if (!dict.ContainsKey(key)) return;
-                                var value = dict[key];
-                                dict.Remove(key);
-                                dict[newKey] = value;
-                            });
+                            Color oldColor = dictBuffer[key];
+                            dictBuffer.Remove(key);
+                            dictBuffer.Add(newKey, oldColor);
+                            SyncToLists();
                             return;
                         }
                     }
                 }
 
                 EditorGUI.BeginChangeCheck();
-                Color newColor = EditorGUILayout.ColorField(dictionary[key]);
+                Color newColor = EditorGUILayout.ColorField(dictBuffer[key]);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    ApplyToTargets("Change Color", dict =>
-                    {
-                        if (!dict.ContainsKey(key)) return;
-                        dict[key] = newColor;
-                    });
+
+                    dictBuffer[key] = newColor;
+                    SyncToLists();
                 }
 
                 if (GUILayout.Button(RemoveButtonContent, GUILayout.Width(RemoveButtonWidth)))
                 {
-                    ApplyToTargets("Remove Color", dict =>
-                    {
-                        dict.Remove(key);
-                    });
+                    dictBuffer.Remove(key);
+                    SyncToLists();
                 }
             }
         }
 
-        private void ApplyToTargets(string undoLabel, System.Action<Dictionary<string, Color>> change)
+        private string SyncListsToDict()
         {
-            if (targets == null || targets.Length == 0) return;
+            kColorPalette = target as KColorPalette;
+            dictColorsBuffer.Clear();
+            dictNamesBuffer.Clear();
 
-            Undo.RecordObjects(targets, undoLabel);
-            foreach (var obj in targets)
+            if (!kColorPalette) return "Color palette does not exist";
+            if (dictNamesField == null) return "Name list does not exist";
+            if (dictColorsField == null) return "Color list does not exist";
+            
+            if (dictColorsField.GetValue(target) is List<Color> tempColorBuffer)
+                dictColorsBuffer.AddRange(tempColorBuffer);
+            if (dictNamesField.GetValue(kColorPalette) is List<string> tempNamesBuffer)
+                dictNamesBuffer.AddRange(tempNamesBuffer);
+
+            if (dictColorsBuffer.Count != dictNamesBuffer.Count)
             {
-                if (obj is not KColorPalette palette) continue;
-                var dict = EnsureDictionary(palette);
-                if (dict == null) continue;
-                change(dict);
-                EditorUtility.SetDirty(palette);
+                Debug.LogError("Mismatched colors list and names list. Filled to match");
             }
+            var maxLength = Math.Max(dictColorsBuffer.Count, dictNamesBuffer.Count);
 
-            Repaint();
+            dictBuffer.Clear();
+            keyBuffer.Clear();
+            for(int i=0;i<maxLength;i++)
+            {
+                if(i == dictColorsBuffer.Count) dictColorsBuffer.Add(Color.white);
+                if(i== dictNamesBuffer.Count) dictNamesBuffer.Add(GenerateUniqueKey(dictBuffer));
+
+                dictBuffer.Add(dictNamesBuffer[i], dictColorsBuffer[i]);
+            }
+            keyBuffer.AddRange(dictNamesBuffer);
+            return null;
         }
 
-        private Dictionary<string, Color> EnsureDictionary(KColorPalette palette)
+        private void SyncToLists()
         {
-            if (!palette || dictionaryField == null) return null;
-
-            if (dictionaryField.GetValue(palette) is Dictionary<string, Color> existing)
+            kColorPalette = target as KColorPalette;
+            dictColorsBuffer.Clear();
+            dictNamesBuffer.Clear();
+            
+            foreach(var key in dictBuffer.Keys)
             {
-                return existing;
+                dictNamesBuffer.Add(key);
+                dictColorsBuffer.Add(dictBuffer[key]);
             }
-
-            var created = new Dictionary<string, Color>();
-            dictionaryField.SetValue(palette, created);
-            EditorUtility.SetDirty(palette);
-            return created;
+            dictNamesField.SetValue(kColorPalette, dictNamesBuffer);
+            dictColorsField.SetValue(kColorPalette, dictColorsBuffer);
+            EditorUtility.SetDirty(kColorPalette);
+            Repaint();
         }
 
         private static string GenerateUniqueKey(Dictionary<string, Color> dictionary)

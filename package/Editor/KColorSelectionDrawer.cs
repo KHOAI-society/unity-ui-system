@@ -28,10 +28,10 @@ namespace Khoai.Editors
                 return;
             }
 
-            var paletteProp = property.serializedObject.FindProperty("palette");
+            var paletteProp = property.serializedObject.FindProperty("colorPalette");
             if (paletteProp == null)
             {
-                EditorGUI.HelpBox(position, "Palette field not found on this object.", MessageType.Error);
+                EditorGUI.HelpBox(position, "colorPalette field not found on this object.", MessageType.Error);
                 EditorGUI.EndProperty();
                 return;
             }

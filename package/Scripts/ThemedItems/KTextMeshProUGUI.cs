@@ -14,7 +14,7 @@ namespace Khoai
         public override void SyncColor(KColorPalette colorPalette)
         {
             base.SyncColor(colorPalette);
-            if (!palette) return;
+            if (!base.colorPalette) return;
             if(!mainColor.use) return;
             GetComponent<TextMeshProUGUI>().color = GetColor(mainColor.colorName);
         }

@@ -10,7 +10,7 @@ namespace Khoai
     {
         [SerializeField] List<string> colorNamesList;
         [SerializeField] List<Color> colorList;
-        public Dictionary<string, Color> colorsList
+        public Dictionary<string, Color> ColorMap
         {
             get
             {
@@ -25,10 +25,7 @@ namespace Khoai
     #if UNITY_EDITOR
         private void OnValidate()
         {
-            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredUI>();
-            Debug.Log($"ui count: {coloredUIs.Count()}");
-            foreach (var item in coloredUIs)
-                (item as KIColoredUI).SyncColor(this);
+            KTheme.Instance.UpdateColoredObject();
         }
 #endif
     }

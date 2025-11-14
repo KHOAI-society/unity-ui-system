@@ -28,10 +28,10 @@ namespace Khoai.Editors
                 return;
             }
 
-            var paletteProp = property.serializedObject.FindProperty("palette");
+            var paletteProp = property.serializedObject.FindProperty("colorPalette");
             if (paletteProp == null)
             {
-                EditorGUI.HelpBox(position, "Palette field not found on this object.", MessageType.Error);
+                EditorGUI.HelpBox(position, "colorPalette field not found on this object.", MessageType.Error);
                 EditorGUI.EndProperty();
                 return;
             }
@@ -51,7 +51,7 @@ namespace Khoai.Editors
                 return;
             }
 
-            var dictionary = palette.colorsList;
+            var dictionary = palette.ColorMap;
             if (dictionary == null || dictionary.Count == 0)
             {
                 EditorGUI.HelpBox(position, "Palette has no named colors.", MessageType.Info);
@@ -86,7 +86,7 @@ namespace Khoai.Editors
             
             var options = keyCache.ToArray();
             SerializedProperty useProp = property.FindPropertyRelative("use");
-            SerializedProperty colorNameProp = property.FindPropertyRelative("colorName");
+            SerializedProperty colorNameProp = property.FindPropertyRelative("itemName");
 
             bool useValue = useProp.boolValue;
             string currentKey = colorNameProp.stringValue;
@@ -106,6 +106,7 @@ namespace Khoai.Editors
                 currentIndex = newIndex;
                 useProp.boolValue = useValue;
                 colorNameProp.stringValue = keyCache.ElementAtOrDefault(currentIndex);
+                property.serializedObject.ApplyModifiedProperties();
             }
 
             var color = dictionary.GetValueOrDefault(colorNameProp.stringValue, KThemedItem.errorColor);

@@ -30,6 +30,7 @@ namespace Khoai
 
                 _instance = resources[0];
                 _instance.UpdateColoredObject();
+                _instance.UpdateSpriteAppliedObject();
 
                 return _instance;
             }

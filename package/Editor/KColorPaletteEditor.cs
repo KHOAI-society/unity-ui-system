@@ -14,7 +14,7 @@ namespace Khoai.Editors
         private readonly Dictionary<string, Color> dictBuffer = new();
         private bool showNamedColors = true;
 
-        private static readonly GUIContent NamedColorsLabel = new("Named Colors");
+        private static readonly GUIContent NamedColorsLabel = new("Colors");
         private static readonly GUIContent AddButtonContent = new("Add Color", "Append a new named color entry");
         private static readonly GUIContent RemoveButtonContent = new("-", "Remove this color");
 

@@ -172,7 +172,7 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
   mainColor:
     use: 1
-    colorName: Color 1
+    colorName: Color 2
 --- !u!114 &77690794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,7 +818,7 @@ MonoBehaviour:
   palette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
   mainColor:
     use: 1
-    colorName: Color 2
+    colorName: Color 1
 --- !u!114 &1817159406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,8 +848,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285595512
-  m_fontColor: {r: 0.4716981, g: 1, b: 0.43867922, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

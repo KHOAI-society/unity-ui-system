@@ -26,7 +26,7 @@ namespace Khoai
 #endif            
         }
 
-        public static IEnumerable<MonoBehaviour> GetGameObjectsByType<T>()
+        public static IEnumerable<Component> GetGameObjectsByType<T>()
         {
             Type type = typeof(T);
 #if UNITY_EDITOR

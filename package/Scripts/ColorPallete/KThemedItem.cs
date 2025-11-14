@@ -7,14 +7,14 @@ namespace Khoai
     public class KThemedItemProperty
     {
         public bool use;
-        public string colorName;
-    }    
+        public string itemName;
+    }
 
     public class KThemedItem : KMonoBehaviour
     {
         public static readonly Color errorColor = new(1f, 0f, 1f);
         [KReadOnly] public KColorPalette colorPalette;
-        [KReadOnly] public KTexture2DPallete texture2Dpallete;
+        [KReadOnly] public KSpritePalette spritePalette;
 
         protected override void Start()
         {
@@ -31,14 +31,14 @@ namespace Khoai
         {
             colorPalette = palette;
         }
-        public virtual void SyncTexture2D()
+        public virtual void SyncSprite()
         {
-            SyncTexture2D(texture2Dpallete);
+            SyncSprite(spritePalette);
         }
 
-        public virtual void SyncTexture2D(KTexture2DPallete pallete)
+        public virtual void SyncSprite(KSpritePalette palette)
         {
-            texture2Dpallete = pallete;
+            spritePalette = palette;
         }
 
         protected Color GetColor(string colorName)
@@ -54,11 +54,11 @@ namespace Khoai
             }
         }
 
-        protected Texture2D GetTexture2D(string texture2DName)
+        protected Sprite GetSprite(string spriteName)
         {
             try
             {
-                return texture2Dpallete.Texture2DMap[texture2DName];
+                return spritePalette.SpriteMap[spriteName];
             }
             catch(Exception ex)
             {

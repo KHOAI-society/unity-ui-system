@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Khoai
 {
     [RequireComponent(typeof(Text))]
-    public class KText : KThemedItem, KIColoredItem
+    public class KText : KThemedItem, KIColorAppliedItem
     {
         [KColorSelection]
         [SerializeField]
@@ -16,7 +16,7 @@ namespace Khoai
             base.SyncColor(colorPalette);
             if (!base.colorPalette) return;
             if(!mainColor.use) return;
-            GetComponent<Text>().color = GetColor(mainColor.colorName);
+            GetComponent<Text>().color = GetColor(mainColor.itemName);
         }
 
 #if UNITY_EDITOR

@@ -25,9 +25,9 @@ namespace Khoai
     #if UNITY_EDITOR
         private void OnValidate()
         {
-            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredItem>();
+            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColorAppliedItem>();
             foreach (var item in coloredUIs)
-                (item as KIColoredItem).SyncColor(this);
+                (item as KIColorAppliedItem).SyncColor(this);
         }
 #endif
     }

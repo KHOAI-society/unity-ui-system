@@ -7,20 +7,20 @@ namespace Khoai
     public partial class KTheme : ScriptableObject
     {
         public KColorPalette colorPalette;
-        public KTexture2DPallete texture2DPalette;
+        public KSpritePalette spritePallete;
 
         public void UpdateColoredObject()
         {
-            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredItem>();
+            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColorAppliedItem>();
             foreach(var item in coloredUIs)
-                (item as KIColoredItem).SyncColor(colorPalette);
+                (item as KIColorAppliedItem).SyncColor(colorPalette);
         }
 
         public void UpdateTexture2DAppliedObject()
         {
-            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KITexture2DAppliedItem>();
+            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KISpriteAppliedItem>();
             foreach(var item in coloredUIs)
-                (item as KITexture2DAppliedItem).SyncTexture2D(texture2DPalette);
+                (item as KISpriteAppliedItem).SyncSprite(spritePallete);
         }
 
 #if UNITY_EDITOR

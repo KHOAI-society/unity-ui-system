@@ -5,16 +5,16 @@ namespace Khoai
 {
     public class KReadOnlyAttribute : PropertyAttribute { }
     public class KColorSelectionAttribute : PropertyAttribute { }
-    public interface KIColoredItem
+    public interface KIColorAppliedItem
     {
         public void SyncColor();
         public void SyncColor(KColorPalette colorPalette);
     }
 
-    public class KTexture2DSelectionAttribute : PropertyAttribute { }
-    public interface KITexture2DAppliedItem
+    public class KSpriteSelectionAttribute : PropertyAttribute { }
+    public interface KISpriteAppliedItem
     {
-        public void SyncTexture2D();
-        public void SyncTexture2D(KTexture2DPallete texture2DPallete);
+        public void SyncSprite();
+        public void SyncSprite(KSpritePalette spritePalette);
     }
 }

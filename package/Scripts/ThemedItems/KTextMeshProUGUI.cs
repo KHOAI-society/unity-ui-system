@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Khoai
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class KTextMeshProUGUI : KThemedItem, KIColoredItem
+    public class KTextMeshProUGUI : KThemedItem, KIColorAppliedItem
     {
         [KColorSelection]
         [SerializeField]
@@ -16,7 +16,7 @@ namespace Khoai
             base.SyncColor(colorPalette);
             if (!base.colorPalette) return;
             if(!mainColor.use) return;
-            GetComponent<TextMeshProUGUI>().color = GetColor(mainColor.colorName);
+            GetComponent<TextMeshProUGUI>().color = GetColor(mainColor.itemName);
         }
 
 #if UNITY_EDITOR

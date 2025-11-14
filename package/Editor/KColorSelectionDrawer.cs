@@ -86,7 +86,7 @@ namespace Khoai.Editors
             
             var options = keyCache.ToArray();
             SerializedProperty useProp = property.FindPropertyRelative("use");
-            SerializedProperty colorNameProp = property.FindPropertyRelative("colorName");
+            SerializedProperty colorNameProp = property.FindPropertyRelative("itemName");
 
             bool useValue = useProp.boolValue;
             string currentKey = colorNameProp.stringValue;

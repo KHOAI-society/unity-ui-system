@@ -1,11 +1,9 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Khoai
 {
-    public class KColorSelectionAttribute : PropertyAttribute { }
 
     [CreateAssetMenu(menuName = "UI/KColorPalette")]
     public class KColorPalette : ScriptableObject

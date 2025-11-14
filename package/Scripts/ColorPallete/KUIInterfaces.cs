@@ -1,6 +1,10 @@
 
+using UnityEngine;
+
 namespace Khoai
 {
+    public class KColorSelectionAttribute : PropertyAttribute { }
+    public class KReadOnlyAttribute : PropertyAttribute { }
     public interface KIColoredUI
     {
         public void SyncColor();

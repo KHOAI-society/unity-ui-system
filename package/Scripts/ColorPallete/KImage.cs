@@ -1,5 +1,4 @@
 
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,20 +9,14 @@ namespace Khoai
     {
         [KColorSelection]
         [SerializeField]
-        string mainColor;
+        KThemedItemProperty mainColor;
 
         public override void SyncColor(KColorPalette colorPalette)
         {
             base.SyncColor(colorPalette);
-            try
-            {
-                GetComponent<Image>().color = palette.colorsList[mainColor];
-            }
-            catch(Exception ex)
-            {
-                Debug.LogException(ex);
-                GetComponent<Image>().color = errorColor;
-            }
+            if (!palette) return;
+            if(!mainColor.use) return;
+            GetComponent<Image>().color = GetColor(mainColor.colorName);
         }
 
 #if UNITY_EDITOR

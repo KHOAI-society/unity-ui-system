@@ -8,9 +8,7 @@ namespace Khoai.Editors
     [CustomPropertyDrawer(typeof(KColorSelectionAttribute))]
     public class KColorSelectionDrawer : PropertyDrawer
     {
-        private const float PreviewWidth = 36f;
         private const float PreviewPadding = 4f;
-
         private readonly List<string> keyCache = new();
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -22,9 +20,9 @@ namespace Khoai.Editors
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            if (property.propertyType != SerializedPropertyType.String)
+            if (property.type != "KThemedItemProperty")
             {
-                EditorGUI.HelpBox(position, $"{nameof(KColorSelectionAttribute)} can only be applied to string fields.", MessageType.Error);
+                EditorGUI.HelpBox(position, $"{nameof(KColorSelectionAttribute)} can only be applied to KThemedItemProperty fields.", MessageType.Error);
                 EditorGUI.EndProperty();
                 return;
             }
@@ -75,34 +73,45 @@ namespace Khoai.Editors
             }
 
             Rect controlRect = EditorGUI.PrefixLabel(position, label);
-            float previewWidth = Mathf.Min(PreviewWidth, controlRect.width * 0.35f);
-            previewWidth = Mathf.Max(18f, previewWidth);
+            if (controlRect.width <= 0f) return;
 
-            Rect colorRect = new(controlRect.xMax - previewWidth, controlRect.y, previewWidth, controlRect.height);
-            Rect popupRect = new(controlRect.x, controlRect.y, colorRect.x - controlRect.x - PreviewPadding, controlRect.height);
-
-            if (popupRect.width <= 0f)
-            {
-                popupRect.width = controlRect.width;
-                colorRect.width = 0f;
-            }
+            float controlRectX = controlRect.x;
+            float dropdownWidth =controlRect.width * 0.8f;
+            float objectWidth = controlRect.width * 0.1f;
+            float paddingWidth = 0f;
 
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
 
-            if (colorRect.width <= 0f) return;
-
+            
             var options = keyCache.ToArray();
-            int currentIndex = Array.IndexOf(options, property.stringValue);  
+            SerializedProperty useProp = property.FindPropertyRelative("use");
+            SerializedProperty colorNameProp = property.FindPropertyRelative("colorName");
+
+            bool useValue = useProp.boolValue;
+            string currentKey = colorNameProp.stringValue;
+
+            int currentIndex = Array.IndexOf(options, currentKey);  
+            
             EditorGUI.BeginChangeCheck(); 
-            int newIndex = EditorGUI.Popup(popupRect, currentIndex, options);
+            useValue = EditorGUI.Toggle(new Rect(controlRectX, controlRect.y, objectWidth, controlRect.height), useValue);
+            
+            EditorGUI.BeginDisabledGroup(!useValue);
+            controlRectX = controlRectX + objectWidth + paddingWidth;
+            int newIndex = EditorGUI.Popup(new Rect(controlRectX, controlRect.y, dropdownWidth, controlRect.height), currentIndex, options);
+
+            
             if(EditorGUI.EndChangeCheck())
             {
                 currentIndex = newIndex;
-                property.stringValue = keyCache[currentIndex];
+                useProp.boolValue = useValue;
+                colorNameProp.stringValue = keyCache[currentIndex];
             }
 
-            var color = dictionary.GetValueOrDefault(property.stringValue, KThemedItem.errorColor);
+            var color = dictionary.GetValueOrDefault(colorNameProp.stringValue, KThemedItem.errorColor);
 
+            controlRectX = controlRectX + dropdownWidth + paddingWidth;
+            var colorRect = new Rect(controlRectX, controlRect.y,
+                                    objectWidth, controlRect.height);
             EditorGUI.DrawRect(colorRect, color);
             Handles.color = Color.black;
             Handles.DrawAAPolyLine(2f,
@@ -113,6 +122,7 @@ namespace Khoai.Editors
                 new Vector3(colorRect.xMin, colorRect.yMin));
 
             EditorGUI.EndProperty();
+            EditorGUI.EndDisabledGroup();
         }
     }
 }

@@ -10,10 +10,10 @@ namespace Khoai
 
         public void UpdateColoredObject()
         {
-            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColoredUI>();
+            var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIThemedItem>();
             Debug.Log($"ui count: {coloredUIs.Count()}");
             foreach(var item in coloredUIs)
-                (item as KIColoredUI).SyncColor(colorPalette);
+                (item as KIThemedItem).SyncColor(colorPalette);
         }
 
 #if UNITY_EDITOR

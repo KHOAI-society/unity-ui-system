@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Khoai
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class KTextMeshProUGUI : KThemedItem, KIColoredUI
+    public class KTextMeshProUGUI : KThemedItem, KIThemedItem
     {
         [KColorSelection]
         [SerializeField]

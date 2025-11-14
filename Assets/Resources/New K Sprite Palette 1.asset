@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Khoai::Khoai.KSpritePalette
   spriteNamesList:
   - Sprite 1
+  - Sprite 2
   spriteList:
   - {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}

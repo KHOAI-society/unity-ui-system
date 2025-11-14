@@ -106,6 +106,7 @@ namespace Khoai.Editors
                 currentIndex = newIndex;
                 useProp.boolValue = useValue;
                 colorNameProp.stringValue = keyCache.ElementAtOrDefault(currentIndex);
+                property.serializedObject.ApplyModifiedProperties();
             }
 
             var color = dictionary.GetValueOrDefault(colorNameProp.stringValue, KThemedItem.errorColor);

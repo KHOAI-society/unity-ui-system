@@ -27,6 +27,7 @@ namespace Khoai
         {
             base.SyncSprite(palette);
             if(!spritePalette) return;
+            if(!mainSprite.use) return;
             GetComponent<Image>().sprite = GetSprite(mainSprite.itemName);
         }
 
@@ -34,6 +35,7 @@ namespace Khoai
         protected void OnValidate()
         {
             SyncColor();
+            SyncSprite();
         }
 #endif
     }

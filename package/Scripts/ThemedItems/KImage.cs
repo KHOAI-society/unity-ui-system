@@ -25,7 +25,7 @@ namespace Khoai
 
         public override void SyncSprite(KSpritePalette palette)
         {
-            base.SyncSprite(spritePalette);
+            base.SyncSprite(palette);
             if(!spritePalette) return;
             GetComponent<Image>().sprite = GetSprite(mainSprite.itemName);
         }

@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d0542afc7a2b495dbcb5b0a26d274d2, type: 3}
+  m_Name: New K Theme
+  m_EditorClassIdentifier: SensorInterop::Khoai.KTheme
+  colorPalette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}

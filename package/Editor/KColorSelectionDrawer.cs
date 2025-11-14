@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -104,7 +105,7 @@ namespace Khoai.Editors
             {
                 currentIndex = newIndex;
                 useProp.boolValue = useValue;
-                colorNameProp.stringValue = keyCache[currentIndex];
+                colorNameProp.stringValue = keyCache.ElementAtOrDefault(currentIndex);
             }
 
             var color = dictionary.GetValueOrDefault(colorNameProp.stringValue, KThemedItem.errorColor);

@@ -6,25 +6,27 @@ using UnityEngine;
 
 namespace Khoai.Editors
 {
-    [CustomEditor(typeof(KColorPalette))]
-    public class KColorPaletteEditor : Editor
+    [CustomEditor(typeof(KSpritePalette))]
+    public class KSpritePaletteEditor : Editor
     {
         private const float RemoveButtonWidth = 24f;
+        private const float PreviewSize = 56f;
+
         private readonly List<string> keyBuffer = new();
-        private readonly Dictionary<string, Color> dictBuffer = new();
+        private readonly Dictionary<string, Sprite> dictBuffer = new();
         private bool showNamedColors = true;
 
-        private static readonly GUIContent NamedColorsLabel = new("Colors");
-        private static readonly GUIContent AddButtonContent = new("Add Color", "Append a new named color entry");
-        private static readonly GUIContent RemoveButtonContent = new("-", "Remove this color");
+        private static readonly GUIContent NamedColorsLabel = new("Sprites");
+        private static readonly GUIContent AddButtonContent = new("Add Sprite", "Append a new sprite entry");
+        private static readonly GUIContent RemoveButtonContent = new("-", "Remove this sprite");
 
-        private SerializedProperty colorNamesListSerializedProperty;
-        private SerializedProperty colorListSerializedProperty;
+        private SerializedProperty spriteNamesListSerializedProperty;
+        private SerializedProperty spriteListSerializedProperty;
 
         private void OnEnable()
         {
-            colorNamesListSerializedProperty = serializedObject.FindProperty("colorNamesList");
-            colorListSerializedProperty = serializedObject.FindProperty("colorList");
+            spriteNamesListSerializedProperty = serializedObject.FindProperty("spriteNamesList");
+            spriteListSerializedProperty = serializedObject.FindProperty("spriteList");
         }
 
         public override void OnInspectorGUI()
@@ -62,7 +64,7 @@ namespace Khoai.Editors
 
                 if (GUILayout.Button(AddButtonContent))
                 {
-                    dictBuffer.Add(GenerateUniqueKey(dictBuffer), Color.white);
+                    dictBuffer.Add(GenerateUniqueKey(dictBuffer), null);
                     SyncToLists();
                 }
 
@@ -81,31 +83,34 @@ namespace Khoai.Editors
                     newKey = newKey.Trim();
                     if (string.IsNullOrEmpty(newKey))
                     {
-                        EditorUtility.DisplayDialog("Invalid Name", "Color name cannot be empty.", "OK");
+                        EditorUtility.DisplayDialog("Invalid Name", "Sprite name cannot be empty.", "OK");
                     }
                     else if (newKey != key)
                     {
                         if (dictBuffer.ContainsKey(newKey))
                         {
-                            EditorUtility.DisplayDialog("Duplicate Name", $"Color \"{newKey}\" already exists.", "OK");
+                            EditorUtility.DisplayDialog("Duplicate Name", $"Sprite \"{newKey}\" already exists.", "OK");
                         }
                         else
                         {
-                            Color oldColor = dictBuffer[key];
+                            Sprite oldSprite = dictBuffer[key];
                             dictBuffer.Remove(key);
-                            dictBuffer.Add(newKey, oldColor);
+                            dictBuffer.Add(newKey, oldSprite);
                             SyncToLists();
                             return;
                         }
                     }
                 }
 
-                EditorGUI.BeginChangeCheck();
-                Color newColor = EditorGUILayout.ColorField(dictBuffer[key]);
-                if (EditorGUI.EndChangeCheck())
+                using (new EditorGUILayout.VerticalScope(GUILayout.Width(PreviewSize + 12f)))
                 {
-                    dictBuffer[key] = newColor;
-                    SyncToLists();
+                    EditorGUI.BeginChangeCheck();
+                    Sprite newSprite = (Sprite)EditorGUILayout.ObjectField(dictBuffer[key], typeof(Sprite), false);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        dictBuffer[key] = newSprite;
+                        SyncToLists();
+                    }
                 }
 
                 if (GUILayout.Button(RemoveButtonContent, GUILayout.Width(RemoveButtonWidth)))
@@ -118,65 +123,65 @@ namespace Khoai.Editors
 
         private void SyncListsToDict()
         {
-            List<string> names = Enumerable.Range(0, colorNamesListSerializedProperty.arraySize)
-                .Select(i => colorNamesListSerializedProperty.GetArrayElementAtIndex(i).stringValue)
+            List<string> names = Enumerable.Range(0, spriteNamesListSerializedProperty.arraySize)
+                .Select(i => spriteNamesListSerializedProperty.GetArrayElementAtIndex(i).stringValue)
                 .ToList();
 
-            List<Color> colors = Enumerable.Range(0, colorListSerializedProperty.arraySize)
-                .Select(i => colorListSerializedProperty.GetArrayElementAtIndex(i).colorValue)
+            List<Sprite> sprites = Enumerable.Range(0, spriteListSerializedProperty.arraySize)
+                .Select(i => spriteListSerializedProperty.GetArrayElementAtIndex(i).objectReferenceValue as Sprite)
                 .ToList();
 
-            if (names.Count != colors.Count)
+            if (names.Count != sprites.Count)
             {
-                Debug.LogError("Mismatched colors list and names list. Filled to match");
+                Debug.LogError("Mismatched sprite list and names list. Filled to match");
             }
-            var maxLength = Math.Max(names.Count, colors.Count);
+            var maxLength = Math.Max(names.Count, sprites.Count);
 
             dictBuffer.Clear();
             keyBuffer.Clear();
             for(int i=0;i<maxLength;i++)
             {
-                if(i == colors.Count) colors.Add(Color.white);
+                if(i == sprites.Count) sprites.Add(null);
                 if(i== names.Count) names.Add(GenerateUniqueKey(dictBuffer));
 
-                dictBuffer.Add(names[i], colors[i]);
+                dictBuffer.Add(names[i], sprites[i]);
                 keyBuffer.Add(names[i]);
             }
         }
 
         private void SyncToLists()
         {
-            while (colorNamesListSerializedProperty.arraySize > 0)
+            while (spriteNamesListSerializedProperty.arraySize > 0)
             {
-                colorNamesListSerializedProperty.DeleteArrayElementAtIndex(colorNamesListSerializedProperty.arraySize - 1);
+                spriteNamesListSerializedProperty.DeleteArrayElementAtIndex(spriteNamesListSerializedProperty.arraySize - 1);
             }
-            while (colorListSerializedProperty.arraySize > 0)
+            while (spriteListSerializedProperty.arraySize > 0)
             {
-                colorListSerializedProperty.DeleteArrayElementAtIndex(colorListSerializedProperty.arraySize - 1);
+                spriteListSerializedProperty.DeleteArrayElementAtIndex(spriteListSerializedProperty.arraySize - 1);
             }
 
             var keys = dictBuffer.Keys.ToArray();
             for(int i =0;i<keys.Length;i++)
             {
                 var key = keys[i];
-                colorNamesListSerializedProperty.InsertArrayElementAtIndex(i);
-                var nameElement = colorNamesListSerializedProperty.GetArrayElementAtIndex(i);
+                spriteNamesListSerializedProperty.InsertArrayElementAtIndex(i);
+                var nameElement = spriteNamesListSerializedProperty.GetArrayElementAtIndex(i);
                 nameElement.stringValue = key;
 
-                colorListSerializedProperty.InsertArrayElementAtIndex(i);
-                var colorElement = colorListSerializedProperty.GetArrayElementAtIndex(i);
-                colorElement.colorValue = dictBuffer[key];
+                spriteListSerializedProperty.InsertArrayElementAtIndex(i);
+                var spriteElement = spriteListSerializedProperty.GetArrayElementAtIndex(i);
+                spriteElement.objectReferenceValue = dictBuffer[key];
             }
         }
 
-        private static string GenerateUniqueKey(Dictionary<string, Color> dictionary)
+        private static string GenerateUniqueKey(Dictionary<string, Sprite> dictionary)
         {
             int index = dictionary.Count + 1;
-            string candidate = $"Color {index}";
+            string candidate = $"Sprite {index}";
             while (dictionary.ContainsKey(candidate))
             {
                 index++;
-                candidate = $"Color {index}";
+                candidate = $"Sprite {index}";
             }
 
             return candidate;

@@ -7,7 +7,7 @@ namespace Khoai
     public partial class KTheme : ScriptableObject
     {
         public KColorPalette colorPalette;
-        public KSpritePalette spritePallete;
+        public KSpritePalette spritePalette;
 
         public void UpdateColoredObject()
         {
@@ -16,18 +16,18 @@ namespace Khoai
                 (item as KIColorAppliedItem).SyncColor(colorPalette);
         }
 
-        public void UpdateTexture2DAppliedObject()
+        public void UpdateSpriteAppliedObject()
         {
             var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KISpriteAppliedItem>();
             foreach(var item in coloredUIs)
-                (item as KISpriteAppliedItem).SyncSprite(spritePallete);
+                (item as KISpriteAppliedItem).SyncSprite(spritePalette);
         }
 
 #if UNITY_EDITOR
         void OnValidate()
         {
             UpdateColoredObject();
-            UpdateTexture2DAppliedObject();
+            UpdateSpriteAppliedObject();
         }
 #endif
     }

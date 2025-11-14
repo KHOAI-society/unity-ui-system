@@ -11,7 +11,7 @@ namespace Khoai
         [SerializeField]
         KThemedItemProperty mainColor;
 
-        [KColorSelection]
+        [KSpriteSelection]
         [SerializeField]
         KThemedItemProperty mainSprite;
 

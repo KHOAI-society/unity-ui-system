@@ -10,9 +10,8 @@ namespace Khoai.Editors
         {
             foreach (var obj in serializedObject.targetObjects)
             {
-                var kimage = obj as KImage;
-                if (kimage == null) continue;
-                kimage.SyncColor(KTheme.Instance.colorPalette);
+                (obj as KIColorAppliedItem)?.SyncColor(KTheme.Instance.colorPalette);
+                (obj as KISpriteAppliedItem)?.SyncSprite(KTheme.Instance.spritePalette);
             }
         }
     }

@@ -34,7 +34,7 @@ namespace Khoai
         {
             try
             {
-                return palette.colorsList[colorName];
+                return palette.ColorMap[colorName];
             }
             catch(Exception ex)
             {

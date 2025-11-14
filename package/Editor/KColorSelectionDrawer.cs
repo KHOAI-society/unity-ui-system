@@ -51,7 +51,7 @@ namespace Khoai.Editors
                 return;
             }
 
-            var dictionary = palette.colorsList;
+            var dictionary = palette.ColorMap;
             if (dictionary == null || dictionary.Count == 0)
             {
                 EditorGUI.HelpBox(position, "Palette has no named colors.", MessageType.Info);

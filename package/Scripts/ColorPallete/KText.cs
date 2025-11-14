@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Khoai
 {
     [RequireComponent(typeof(Text))]
-    public class KText : KThemedItem, KIThemedItem
+    public class KText : KThemedItem, KIColoredItem
     {
         [KColorSelection]
         [SerializeField]

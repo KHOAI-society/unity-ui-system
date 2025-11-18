@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
+
 namespace Khoai
 {
     [CreateAssetMenu(menuName = "UI/KTheme")]
-    public partial class KTheme : ScriptableObject
+    public class KTheme : ScriptableObject
     {
         public KColorPalette colorPalette;
         public KSpritePalette spritePalette;

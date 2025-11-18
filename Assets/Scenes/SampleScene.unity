@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799a2d8ae507c4416a7c7732d99dfb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SensorInterop::Khoai.KImage
-  colorPalette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
+  colorPalette: {fileID: 11400000, guid: cc56095e5cdff804886b0d454d53cdd8, type: 2}
   spritePalette: {fileID: 11400000, guid: 0bfea46da07f443a7a68461bc78387f4, type: 2}
   mainColor:
     use: 1
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7830189, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -592,7 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 536697152}
-  - component: {fileID: 536697151}
+  - component: {fileID: 536697153}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -600,20 +600,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &536697151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 536697150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724fd7c6acb1643e6b26358e6af5059e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SensorInterop::Khoai.KThemedItem
-  colorPalette: {fileID: 0}
-  spritePalette: {fileID: 0}
 --- !u!4 &536697152
 Transform:
   m_ObjectHideFlags: 0
@@ -629,6 +615,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536697153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536697150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1375b2fe2ff2c4ff0ac48e9e7cf1c793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SampleScene
 --- !u!1 &801425581
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,7 +677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799a2d8ae507c4416a7c7732d99dfb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SensorInterop::Khoai.KImage
-  colorPalette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
+  colorPalette: {fileID: 11400000, guid: cc56095e5cdff804886b0d454d53cdd8, type: 2}
   spritePalette: {fileID: 11400000, guid: 0bfea46da07f443a7a68461bc78387f4, type: 2}
   mainColor:
     use: 1
@@ -700,7 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.042452812, g: 1, b: 0.18890126, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -824,7 +822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a417a9d9451e640a3b7b3dadda1e657a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SensorInterop::Khoai.KTextMeshProUGUI
-  colorPalette: {fileID: 11400000, guid: fea70934a355c4dd3b62306c63beb494, type: 2}
+  colorPalette: {fileID: 11400000, guid: cc56095e5cdff804886b0d454d53cdd8, type: 2}
   spritePalette: {fileID: 0}
   mainColor:
     use: 1
@@ -858,8 +856,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281401099
-  m_fontColor: {r: 0.042452812, g: 1, b: 0.18890126, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

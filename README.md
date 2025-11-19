@@ -65,10 +65,8 @@ public class ThemeSwitcher : MonoBehaviour
 
     public void ApplyLightTheme()
     {
-        runtimeTheme.colorPalette = lightColors;
-        runtimeTheme.spritePalette = lightSprites;
-        runtimeTheme.UpdateColoredObject();
-        runtimeTheme.UpdateSpriteAppliedObject();
+        runtimeTheme.SetColorPalette(lightColors);
+        runtimeTheme.SetSpritePalette(lightSprites);
     }
 }
 ```

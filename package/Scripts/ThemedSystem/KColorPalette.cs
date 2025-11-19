@@ -22,7 +22,7 @@ namespace Khoai
             }
         }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         private void OnValidate()
         {
             KTheme.Instance.UpdateColoredObject();

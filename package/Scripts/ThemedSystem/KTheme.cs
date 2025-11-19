@@ -39,6 +39,28 @@ namespace Khoai
             }
         }
 
+        public Color GetColorByKey(string key)
+        {
+            return colorPalette.ColorMap[key];
+        }
+
+        public Sprite GetSpriteByKey(string key)
+        {
+            return spritePalette.SpriteMap[key];
+        }
+
+        public void SetColorPalette(KColorPalette kColorPalette)
+        {
+            colorPalette = kColorPalette;
+            UpdateColoredObject();
+        }
+
+        public void SetSpritePalette(KSpritePalette kSpritePalette)
+        {
+            spritePalette = kSpritePalette;
+            UpdateSpriteAppliedObject();
+        }
+
         public void UpdateColoredObject()
         {
             var coloredUIs = KMonoBehaviour.GetGameObjectsByType<KIColorAppliedItem>();

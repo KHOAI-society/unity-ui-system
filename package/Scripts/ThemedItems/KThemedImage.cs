@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Khoai
 {
     [RequireComponent(typeof(Image))]
-    public class KImage : KThemedItem, KIColorAppliedItem, KISpriteAppliedItem
+    public class KThemedImage : KThemedItem, KIColorAppliedItem, KISpriteAppliedItem
     {
         [KColorSelection]
         [SerializeField]

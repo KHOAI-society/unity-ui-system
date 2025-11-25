@@ -6,8 +6,8 @@ namespace Khoai
     [Serializable]
     public class KThemedItemProperty
     {
-        public bool use;
-        public string itemName;
+        public bool use = false;
+        public string itemName = "";
     }
 
     public class KThemedItem : KMonoBehaviour

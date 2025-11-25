@@ -15,6 +15,7 @@ namespace Khoai.UI
         [SerializeField] private TextMeshProUGUI offText;
         [SerializeField] private TextMeshProUGUI onText;
         [SerializeField] private Image background;
+        [SerializeField] private RectTransform handleTransform;
 
         public SwitchClickedEvent OnSwitch
         {
@@ -44,9 +45,15 @@ namespace Khoai.UI
             if(onText == null) return;
             if(offText == null) return;
             if(background == null) return;
+            if(handleTransform == null) return;
             onText.color = isOn ? Color.green : Color.white;
             offText.color = isOn ? Color.white : Color.red;
             background.color = isOn? Color.green : Color.red;
+            float anchor = isOn? 1f : 0f;
+            handleTransform.pivot = new Vector2(anchor, 0.5f);
+            handleTransform.localScale = Vector3.one;
+            handleTransform.anchorMin = new Vector2(anchor, 0.5f);
+            handleTransform.anchorMax = new Vector2(anchor, 0.5f);
         }
 
 #if UNITY_EDITOR

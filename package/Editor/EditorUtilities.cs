@@ -175,6 +175,7 @@ namespace Khoai.Editors
             so.FindProperty("background").objectReferenceValue = image;
             so.FindProperty("offText").objectReferenceValue = offText;
             so.FindProperty("onText").objectReferenceValue = onText;
+            so.FindProperty("handleTransform").objectReferenceValue = handleTransform;
             so.ApplyModifiedProperties();
             EditorUtility.SetDirty(kSwitch);                         
         }

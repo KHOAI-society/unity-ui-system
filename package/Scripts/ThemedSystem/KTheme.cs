@@ -1,13 +1,65 @@
-using System.Linq;
+using System;
 using UnityEngine;
+
 
 namespace Khoai
 {
     [CreateAssetMenu(menuName = "UI/KTheme")]
-    public partial class KTheme : ScriptableObject
+    public class KTheme : ScriptableObject
     {
         public KColorPalette colorPalette;
         public KSpritePalette spritePalette;
+        private static KTheme _instance;
+        public static KTheme Instance
+        {
+            get
+            {
+                if (_instance != null) return _instance;
+
+                var resources = Resources.LoadAll<KTheme>("");
+                if (resources.Length == 0)
+                {
+                    throw new Exception("There are no SriptableObject KTheme in Resources folder");
+                }
+                else if (resources.Length > 1)
+                {
+                    string message = "There more than 1 SriptableObject KTheme in Resources folder\n";
+                    foreach (var res in resources)
+                    {
+                        message += $"{res.name} \n";
+                    }
+                    throw new Exception(message);
+                }
+
+                _instance = resources[0];
+                _instance.UpdateColoredObject();
+                _instance.UpdateSpriteAppliedObject();
+
+                return _instance;
+            }
+        }
+
+        public Color GetColorByKey(string key)
+        {
+            return colorPalette.ColorMap[key];
+        }
+
+        public Sprite GetSpriteByKey(string key)
+        {
+            return spritePalette.SpriteMap[key];
+        }
+
+        public void SetColorPalette(KColorPalette kColorPalette)
+        {
+            colorPalette = kColorPalette;
+            UpdateColoredObject();
+        }
+
+        public void SetSpritePalette(KSpritePalette kSpritePalette)
+        {
+            spritePalette = kSpritePalette;
+            UpdateSpriteAppliedObject();
+        }
 
         public void UpdateColoredObject()
         {

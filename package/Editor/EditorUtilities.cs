@@ -121,20 +121,6 @@ namespace Khoai.Editors
             image.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(kStandardSpritePath);
             image.type = Image.Type.Sliced;
 
-            GameObject filledGo = new("Filled");
-            var filledTransform = filledGo.AddComponent<RectTransform>();
-            filledTransform.SetParent(switchTransform);
-            filledTransform.pivot = new Vector2(0.5f, 0.5f);
-            filledTransform.localScale = Vector3.one;
-            filledTransform.anchorMin = new Vector2(0f, 0f);
-            filledTransform.anchorMax = new Vector2(1f, 1f);
-            filledTransform.offsetMin = Vector2.zero;
-            filledTransform.offsetMax = Vector2.zero;
-            var filledImage = filledGo.AddComponent<Image>();
-            filledImage.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>(kStandardSpritePath);
-            filledImage.color = Color.red;
-            filledImage.type = Image.Type.Sliced;
-
             GameObject handleGo = new("Handle");
             var handleTransform = handleGo.AddComponent<RectTransform>();
             handleTransform.SetParent(switchTransform);
@@ -176,12 +162,21 @@ namespace Khoai.Editors
             onText.fontSize = 14;
             onText.alignment = TextAlignmentOptions.Right;
 
-            switchGo.AddComponent<KSwtich>();
+            var kSwitch = switchGo.AddComponent<KSwtich>();
             SetLayerRecursively(topTransform, LayerMask.NameToLayer(kUILayerName));
 
             AddThemedComponents(top.transform);
 
             Undo.CollapseUndoOperations(undoGroup);
+
+            SerializedObject so = new(kSwitch);
+            so.Update();
+            so.FindProperty("isOn").boolValue = false;
+            so.FindProperty("background").objectReferenceValue = image;
+            so.FindProperty("offText").objectReferenceValue = offText;
+            so.FindProperty("onText").objectReferenceValue = onText;
+            so.ApplyModifiedProperties();
+            EditorUtility.SetDirty(kSwitch);                         
         }
 
         private static void CenterRectTransform(RectTransform rectTransform, Vector2 size)

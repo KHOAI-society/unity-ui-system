@@ -1,8 +1,9 @@
 using System;
-using UnityEditor.Build;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Khoai.UI
 {
@@ -11,6 +12,9 @@ namespace Khoai.UI
         [Serializable] public class SwitchClickedEvent : UnityEvent<bool> { }
         [SerializeField] private SwitchClickedEvent m_OnSwitch = new();
         [SerializeField] private bool isOn;
+        [SerializeField] private TextMeshProUGUI offText;
+        [SerializeField] private TextMeshProUGUI onText;
+        [SerializeField] private Image background;
 
         public SwitchClickedEvent OnSwitch
         {
@@ -25,7 +29,7 @@ namespace Khoai.UI
 
             UISystemProfilerApi.AddMarker("KSwitch.OnPointerClick", this);
             isOn = !isOn;
-            m_OnSwitch.Invoke(isOn);
+            m_OnSwitch?.Invoke(isOn);
             SetSwitchUI();
         }
 
@@ -35,16 +39,21 @@ namespace Khoai.UI
             SetSwitchUI();
         }
 
-        private void SetSwitchUI()
+        protected virtual void SetSwitchUI()
         {
-            Debug.Log($"switch is {isOn}");
+            if(onText == null) return;
+            if(offText == null) return;
+            if(background == null) return;
+            onText.color = isOn ? Color.green : Color.white;
+            offText.color = isOn ? Color.white : Color.red;
+            background.color = isOn? Color.green : Color.red;
         }
 
 #if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
-            Debug.Log($"OnValidate is {isOn}");   
+            SetSwitchUI(); 
         }
 #endif
     }
